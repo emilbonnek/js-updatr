@@ -41,18 +41,9 @@ export function InternalErrorPage({ errorMessage }: ErrorPageProps) {
           <div className="w-1/3 p-6 border-r">
             <h2 className="text-lg font-semibold mb-4">Error Information</h2>
             <p className="text-gray-600 mb-4">
-              An error occurred while executing an npm command. This could be
-              due to various reasons such as network issues, package conflicts,
-              or system limitations.
+              An error occurred. This could be due to various reasons such as
+              network issues, package conflicts, or system limitations.
             </p>
-            <h3 className="font-semibold mb-2">Possible Next Steps:</h3>
-            <ul className="list-disc list-inside text-gray-600 space-y-1">
-              <li>Check your internet connection</li>
-              <li>Verify your npm configuration</li>
-              <li>Clear npm cache and try again</li>
-              <li>Check for conflicting dependencies</li>
-              <li>Consult the error message for specific issues</li>
-            </ul>
           </div>
           <div className="w-2/3 p-6">
             <h2 className="text-lg font-semibold mb-4">Error Details</h2>

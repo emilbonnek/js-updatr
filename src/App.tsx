@@ -1,13 +1,13 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { TableDependencies } from "./TableDependencies";
 import { Toaster } from "./components/ui/sonner";
+import { Application } from "./Application";
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <TableDependencies />
+      <Application />
       <Toaster position="bottom-left" richColors />
     </QueryClientProvider>
   );

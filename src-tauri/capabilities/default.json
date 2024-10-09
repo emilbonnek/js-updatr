@@ -17,9 +17,12 @@
           "args": [
             "outdated",
             "--json",
+            "--long",
             "--parseable",
             "--prefix",
-            "/Users/emilbonnek/Documents/dev/openframe-org/frame-biu-dashboard"
+            {
+              "validator": "\\S+"
+            }
           ]
         },
         {
@@ -33,11 +36,15 @@
             "--json",
             "--parseable",
             "--prefix",
-            "/Users/emilbonnek/Documents/dev/openframe-org/frame-biu-dashboard"
+            {
+              "validator": "\\S+"
+            }
           ]
         }
       ]
     },
-    "shell:default"
+    "shell:default",
+    "fs:allow-app-read",
+    "dialog:default"
   ]
 }
