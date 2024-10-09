@@ -80,8 +80,8 @@ export function useUpdateDependency({
       const newDependencies = Object.fromEntries(
         Object.entries(dependencies).filter(([name]) => name !== packageName)
       );
-      queryClient.setQueryData(["dependencies"], newDependencies);
-      queryClient.invalidateQueries({ queryKey: ["dependencies"] });
+      queryClient.setQueryData(["dependencies", directory], newDependencies);
+      queryClient.invalidateQueries({ queryKey: ["dependencies", directory] });
       toast.success(`Successfully updated ${packageName} to ${version}`);
     },
     onError: (error) => {

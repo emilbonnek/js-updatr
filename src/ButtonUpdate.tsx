@@ -1,3 +1,4 @@
+import { Loader2, CloudDownload } from "lucide-react";
 import { Button } from "./components/ui/button";
 import { useUpdateDependency } from "./useUpdateDependency";
 
@@ -26,6 +27,11 @@ export const ButtonUpdate = ({
       }}
       disabled={isPending}
     >
+      {isPending ? (
+        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+      ) : (
+        <CloudDownload className="mr-2 h-4 w-4" />
+      )}
       Update
     </Button>
   );
