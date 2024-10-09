@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "./components/ui/button";
 import { Command } from "@tauri-apps/plugin-shell";
 import { z } from "zod";
+import { toast } from "sonner";
 
 const vulnerabilitiesSchema = z.object({
   info: z.number(),
@@ -66,42 +67,22 @@ export const ButtonUpdate = ({
       const response = responseSchema.parse(responseRaw);
       return response;
     },
-    // Optimistic update (it should be removed from the dependencies list)
-    onMutate: async ({ packageName }) => {
-      // Cancel any outgoing refetches
-      // (so they don't overwrite our optimistic update)
-      await queryClient.cancelQueries({ queryKey: ["dependencies"] });
-
-      // Snapshot the previous value
-      const previousDependencies = queryClient.getQueryData([
-        "dependencies",
-      ]) as Record<string, any>;
-
-      // The new dependencies, should just have remoced the key with the packageName
-      const newDependencies = Object.fromEntries(
-        Object.entries(previousDependencies).filter(
-          ([key]) => key !== packageName
-        )
-      );
-
-      // Optimistically update to the new value
-      queryClient.setQueryData(["dependencies"], newDependencies);
-
-      // Return a context object with the snapshotted value
-      return { previousDependencies };
-    },
-    // If the mutation fails, use the context to roll back
-    onError: (_err, _variables, context) => {
-      if (context)
-        queryClient.setQueryData(
-          ["dependencies"],
-          context.previousDependencies
-        );
-    },
-    // On success, invalidate the dependencies query
     onSuccess: () => {
-      // On success, remove the dependency from the list
+      // Make an immdiate update with the package removed, and then invalidate the cache
+      const dependencies = queryClient.getQueryData(["dependencies"]) as Record<
+        string,
+        any
+      >;
+      const newDependencies = Object.fromEntries(
+        Object.entries(dependencies).filter(([name]) => name !== packageName)
+      );
+      queryClient.setQueryData(["dependencies"], newDependencies);
       queryClient.invalidateQueries({ queryKey: ["dependencies"] });
+      toast.success(`Successfully updated ${packageName} to ${version}`);
+    },
+    onError: (error) => {
+      console.error(error);
+      toast.error(`Failed to update ${packageName} to ${version}`);
     },
   });
 

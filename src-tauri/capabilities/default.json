@@ -17,6 +17,7 @@
           "args": [
             "outdated",
             "--json",
+            "--parseable",
             "--prefix",
             "/Users/emilbonnek/Documents/dev/openframe-org/frame-biu-dashboard"
           ]
@@ -30,6 +31,7 @@
               "validator": "\\S+"
             },
             "--json",
+            "--parseable",
             "--prefix",
             "/Users/emilbonnek/Documents/dev/openframe-org/frame-biu-dashboard"
           ]

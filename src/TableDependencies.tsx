@@ -10,22 +10,29 @@ import {
   TableRow,
 } from "./components/ui/table";
 import { ButtonUpdate } from "./ButtonUpdate";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { InternalErrorPage } from "./components/internal-error-page";
 
 // For getting outdated packages
 const packageSchema = z.object({
-  current: z.string(),
+  current: z.string().optional(),
   wanted: z.string(),
   latest: z.string(),
   dependent: z.string(),
   location: z.string(),
+  type: z.enum(["devDependencies", "dependencies"]).optional(),
+  homepage: z.string().url().optional(),
 });
 const dataSchema = z.record(z.string(), packageSchema);
 
 export const TableDependencies = () => {
-  // const queryClient = useQueryClient(); // use later for optimistic updates
+  const [animationParent] = useAutoAnimate();
+
   const {
     data: dependencies,
+    error,
     isLoading,
+    isError,
     isSuccess,
   } = useQuery({
     queryKey: ["dependencies"],
@@ -45,8 +52,12 @@ export const TableDependencies = () => {
     return <div>Loading...</div>;
   }
 
+  if (isError) {
+    return <InternalErrorPage errorMessage={error.message} />;
+  }
+
   if (!isSuccess) {
-    return <div>Error</div>;
+    return null;
   }
 
   return (
@@ -62,7 +73,7 @@ export const TableDependencies = () => {
             <TableHead className="text-right">Action</TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody>
+        <TableBody ref={animationParent}>
           {Object.entries(dependencies).map(([name, packageData]) => (
             <TableRow key={name}>
               <TableCell className="font-medium">{name}</TableCell>
