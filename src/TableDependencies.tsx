@@ -10,11 +10,10 @@ import { ButtonUpdate } from "./ButtonUpdate";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { InternalErrorPage } from "./components/internal-error-page";
 import { useOutdatedDependencies } from "./useOutdatedDependencies";
-import { Button } from "./components/ui/button";
+import { Skeleton } from "./components/ui/skeleton";
 
 export const TableDependencies = ({
   currentDirectory,
-  selectCurrentDirectory,
 }: {
   currentDirectory: string;
   selectCurrentDirectory: () => void;
@@ -29,7 +28,13 @@ export const TableDependencies = ({
   } = useOutdatedDependencies(currentDirectory);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="container mx-auto py-10 w-full">
+        <Skeleton className="w-full h-10 mb-2" />
+        <Skeleton className="w-full h-10 mb-2" />
+        <Skeleton className="w-full h-10 mb-2" />
+      </div>
+    );
   }
 
   if (isError) {
@@ -42,7 +47,6 @@ export const TableDependencies = ({
 
   return (
     <div className="container mx-auto py-10">
-      <Button onClick={selectCurrentDirectory}>Select Folder</Button>
       <Table>
         <TableHeader>
           <TableRow>
@@ -64,7 +68,7 @@ export const TableDependencies = ({
                 <ButtonUpdate
                   directory={currentDirectory}
                   packageName={name}
-                  version={packageData.wanted}
+                  version={packageData.latest}
                 />
               </TableCell>
             </TableRow>

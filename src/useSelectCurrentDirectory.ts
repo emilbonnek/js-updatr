@@ -5,10 +5,16 @@ export const useSelectCurrentDirectory = () => {
   return useMutation({
     mutationKey: ["folder"],
     mutationFn: async () => {
-      return open({
+      const result = open({
         multiple: false,
         directory: true,
       });
+
+      if (result === null) {
+        return undefined;
+      }
+
+      return result;
     },
   });
 };
